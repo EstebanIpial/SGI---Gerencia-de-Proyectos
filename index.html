@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Inicio de sesión -->
+  <div id="pantallaLogin">
+    <h2>Inicio de sesión</h2>
+
+    <form id="formLogin">
+      <label for="correoLogin">Correo:</label>
+      <input type="email" id="correoLogin" required>
+
+      <br><br>
+
+      <label for="claveLogin">Contraseña:</label>
+      <input type="password" id="claveLogin" required>
+
+      <br><br>
+
+      <button type="submit">Ingresar</button>
+      <p id="mensajeLogin"></p>
+    </form>
+  </div>
+
+  <!-- Inventario: aparece después de ingresar -->
+  <div id="contenidoInventario" style="display: none;">
+
+    <header class="encabezado">
+      <div>
+        <h1>Inventario</h1>
+        <p>Gestión de inventario de la tienda de ropa</p>
+      </div>
+      <button id="btnCerrarSesion">Cerrar sesión</button>
+    </header>
+
+    <main class="contenedor">
+      <section class="bienvenida">
+        <h2>Inventario de prendas</h2>
+        <p>Registra y consulta los productos disponibles en tu tienda.</p>
+      </section>
+
+      <section class="resumen">
+        <article class="tarjeta">
+          <span>Referencias registradas</span>
+          <strong id="totalProductos">0</strong>
+        </article>
+        <article class="tarjeta">
+          <span>Productos con poco stock</span>
+          <strong id="stockBajo">0</strong>
+        </article>
+        <article class="tarjeta">
+          <span>Productos agotados</span>
+          <strong id="agotados">0</strong>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-titulo">
+          <div>
+            <h2>Productos</h2>
+            <p>Consulta las prendas registradas.</p>
+          </div>
+          <button id="btnNuevo">+ Registrar producto</button>
+        </div>
+
+        <input
+          id="buscar"
+          type="search"
+          placeholder="Buscar por nombre o referencia..."
+        >
+
+        <form id="formProducto" class="formulario oculto">
+          <h3>Registrar nueva prenda</h3>
+
+          <label for="referencia">Referencia</label>
+          <input id="referencia" required placeholder="Ej. CAM-001">
+
+          <label for="nombre">Nombre del producto</label>
+          <input id="nombre" required placeholder="Ej. Camiseta básica">
+
+          <label for="categoria">Categoría</label>
+          <select id="categoria" required>
+            <option value="">Selecciona una categoría</option>
+            <option>Camisas</option>
+            <option>Pantalones</option>
+            <option>Vestidos</option>
+            <option>Faldas</option>
+            <option>Chaquetas</option>
+            <option>Accesorios</option>
+            <option>Calzado</option>
+          </select>
+
+          <label for="talla">Talla</label>
+          <select id="talla" required>
+            <option value="">Selecciona una talla</option>
+            <option>XS</option>
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+            <option>Única</option>
+          </select>
+
+          <label for="color">Color</label>
+          <input id="color" required placeholder="Ej. Negro">
+
+          <label for="precio">Precio en pesos</label>
+          <input id="precio" type="number" min="0" required>
+
+          <label for="cantidad">Cantidad inicial</label>
+          <input id="cantidad" type="number" min="0" required>
+
+          <label for="minimo">Stock mínimo</label>
+          <input id="minimo" type="number" min="0" value="5" required>
+
+          <div class="acciones">
+            <button type="submit">Guardar producto</button>
+            <button type="button" id="btnCancelar" class="secundario">
+              Cancelar
+            </button>
+          </div>
+        </form>
+
+        <div class="tabla-contenedor">
+          <table>
+            <thead>
+              <tr>
+                <th>Referencia</th>
+                <th>Producto</th>
+                <th>Talla</th>
+                <th>Color</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="listaProductos">
+              <tr>
+                <td colspan="7">No hay productos registrados todavía.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p id="mensaje" role="status"></p>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
