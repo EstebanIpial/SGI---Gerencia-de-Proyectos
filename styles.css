@@ -1,0 +1,250 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Inicio de sesión */
+#pantallaLogin {
+  width: 320px;
+  margin: 100px auto;
+  padding: 25px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+#pantallaLogin h2 {
+  text-align: center;
+}
+
+#pantallaLogin label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#pantallaLogin input {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#pantallaLogin button {
+  width: 100%;
+  padding: 10px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#mensajeLogin {
+  color: #c62828;
+  font-size: 14px;
+}
+
+/* Encabezado del inventario */
+.encabezado {
+  background-color: white;
+  padding: 20px 30px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.encabezado h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.encabezado p {
+  margin-bottom: 0;
+  color: #666;
+}
+
+/* Contenido principal */
+.contenedor {
+  max-width: 1200px;
+  margin: 25px auto;
+  padding: 0 20px;
+}
+
+.bienvenida {
+  margin-bottom: 20px;
+}
+
+/* Tarjetas del resumen */
+.resumen {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.tarjeta {
+  flex: 1;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.tarjeta span {
+  display: block;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.tarjeta strong {
+  font-size: 26px;
+}
+
+/* Panel de productos */
+.panel {
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.panel-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.panel-titulo h2 {
+  margin-bottom: 5px;
+}
+
+.panel-titulo p {
+  margin-top: 0;
+  color: #666;
+}
+
+/* Campos y botones */
+input,
+select {
+  font-family: Arial, sans-serif;
+}
+
+#buscar {
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.formulario h3 {
+  grid-column: 1 / -1;
+}
+
+.formulario label {
+  align-self: center;
+}
+
+.formulario input,
+.formulario select {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.acciones {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #444;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #222;
+}
+
+.secundario {
+  background-color: #777;
+}
+
+/* Tabla de inventario */
+.tabla-contenedor {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #eee;
+}
+
+.oculto {
+  display: none !important;
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 700px) {
+  .resumen {
+    flex-direction: column;
+  }
+
+  .encabezado,
+  .panel-titulo {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .formulario {
+    grid-template-columns: 1fr;
+  }
+
+  .formulario h3,
+  .acciones {
+    grid-column: auto;
+  }
+
+  #pantallaLogin {
+    width: calc(100% - 40px);
+    margin: 60px auto;
+  }
+}
