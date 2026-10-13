@@ -1,23 +1,99 @@
-
 let productos = JSON.parse(
   localStorage.getItem("modastock_productos") || "[]"
 );
+let indiceEdicion = -1;
 
 const formulario = document.getElementById("formProducto");
 const listaProductos = document.getElementById("listaProductos");
 const buscar = document.getElementById("buscar");
 const mensaje = document.getElementById("mensaje");
 
-// Inicio de sesión
+
+let usuarios = JSON.parse(
+  localStorage.getItem("modastock_usuarios") || "[]"
+);
+
+// Mostrar el formulario de registro
+document.getElementById("btnMostrarRegistro").addEventListener("click", function() {
+  document.getElementById("pantallaLogin").classList.add("oculto");
+  document.getElementById("pantallaRegistro").classList.remove("oculto");
+});
+
+// Volver al inicio de sesión
+document.getElementById("btnVolverLogin").addEventListener("click", function() {
+  document.getElementById("pantallaRegistro").classList.add("oculto");
+  document.getElementById("pantallaLogin").classList.remove("oculto");
+  document.getElementById("formRegistro").reset();
+  document.getElementById("mensajeRegistro").textContent = "";
+});
+
+// Registrar usuario
+document.getElementById("formRegistro").addEventListener("submit", function(evento) {
+  evento.preventDefault();
+
+  const nombre = document.getElementById("nombreUsuario").value.trim();
+  const correo = document.getElementById("correoRegistro").value.trim().toLowerCase();
+  const clave = document.getElementById("claveRegistro").value;
+  const confirmar = document.getElementById("confirmarClave").value;
+  const mensajeRegistro = document.getElementById("mensajeRegistro");
+
+  if (clave !== confirmar) {
+    mensajeRegistro.textContent = "Las contraseñas no coinciden.";
+    return;
+  }
+
+  const existe = usuarios.some(function(usuario) {
+    return usuario.correo === correo;
+  });
+
+  if (existe || correo === "mural@estudiante.uniajc.edu.co") {
+    mensajeRegistro.textContent = "Este correo ya está registrado.";
+    return;
+  }
+
+  usuarios.push({
+    nombre: nombre,
+    correo: correo,
+    clave: clave
+  });
+
+  localStorage.setItem("modastock_usuarios", JSON.stringify(usuarios));
+
+  document.getElementById("formRegistro").reset();
+  document.getElementById("pantallaRegistro").classList.add("oculto");
+  document.getElementById("pantallaLogin").classList.remove("oculto");
+
+  document.getElementById("correoLogin").value = correo;
+  document.getElementById("mensajeLogin").textContent =
+    "Cuenta creada. Ahora ingresa con tu contraseña.";
+});
+
+
+ // Inicio de sesión
 document.getElementById("formLogin").addEventListener("submit", function(evento) {
   evento.preventDefault();
 
-  const correo = document.getElementById("correoLogin").value.trim();
+  const correo = document.getElementById("correoLogin").value.trim().toLowerCase();
   const clave = document.getElementById("claveLogin").value;
 
-  if (correo === "mural@estudiante.uniajc.edu.co" && clave === "12345") {
+  // Actualizar usuarios guardados
+  usuarios = JSON.parse(
+    localStorage.getItem("modastock_usuarios") || "[]"
+  );
+
+  const usuario = usuarios.find(function(u) {
+    return u.correo === correo && u.clave === clave;
+  });
+
+  const cuentaPrueba =
+    correo === "mural@estudiante.uniajc.edu.co" &&
+    clave === "12345";
+
+  if (usuario || cuentaPrueba) {
     document.getElementById("pantallaLogin").style.display = "none";
+    document.getElementById("pantallaRegistro").classList.add("oculto");
     document.getElementById("contenidoInventario").style.display = "block";
+    document.getElementById("mensajeLogin").textContent = "";
 
     mostrarProductos();
   } else {
@@ -46,9 +122,10 @@ document.getElementById("btnCancelar").addEventListener("click", function() {
   formulario.reset();
   formulario.classList.add("oculto");
   mensaje.textContent = "";
+  indiceEdicion = -1;
 });
 
-// Registrar producto
+
 formulario.addEventListener("submit", function(evento) {
   evento.preventDefault();
 
@@ -63,14 +140,34 @@ formulario.addEventListener("submit", function(evento) {
     minimo: Number(document.getElementById("minimo").value)
   };
 
-  const referenciaExiste = productos.some(function(p) {
-    return p.referencia.toLowerCase() === producto.referencia.toLowerCase();
+  const referenciaExiste = productos.some(function(p, i) {
+    return p.referencia.toLowerCase() === producto.referencia.toLowerCase()
+      && i !== indiceEdicion;
   });
 
   if (referenciaExiste) {
     mensaje.textContent = "Ya existe un producto con esa referencia.";
     return;
   }
+
+  if (indiceEdicion === -1) {
+    productos.push(producto);
+    mensaje.textContent = "Producto registrado correctamente.";
+  } else {
+    productos[indiceEdicion] = producto;
+    mensaje.textContent = "Producto modificado correctamente.";
+    indiceEdicion = -1;
+  }
+
+  localStorage.setItem(
+    "modastock_productos",
+    JSON.stringify(productos)
+  );
+
+  formulario.reset();
+  formulario.classList.add("oculto");
+  mostrarProductos();
+});
 
   productos.push(producto);
 
@@ -84,7 +181,7 @@ formulario.addEventListener("submit", function(evento) {
 
   mostrarProductos();
   mensaje.textContent = "Producto registrado correctamente.";
-});
+
 
 // Buscar productos
 buscar.addEventListener("input", mostrarProductos);
@@ -104,7 +201,7 @@ function mostrarProductos() {
     const fila = document.createElement("tr");
     const celda = document.createElement("td");
 
-    celda.colSpan = 7;
+    celda.colSpan = 8;
     celda.textContent = productos.length === 0
       ? "No hay productos registrados todavía."
       : "No se encontraron productos.";
@@ -138,11 +235,62 @@ function mostrarProductos() {
       estado
     ];
 
-    valores.forEach(function(valor) {
-      const celda = document.createElement("td");
-      celda.textContent = valor;
-      fila.appendChild(celda);
+   
+valores.forEach(function(valor) {
+  const celda = document.createElement("td");
+  celda.textContent = valor;
+  fila.appendChild(celda);
+});
+
+// Botones de modificar y eliminar
+const celdaAcciones = document.createElement("td");
+
+const btnModificar = document.createElement("button");
+btnModificar.textContent = "Modificar";
+
+btnModificar.addEventListener("click", function() {
+  document.getElementById("referencia").value = producto.referencia;
+  document.getElementById("nombre").value = producto.nombre;
+  document.getElementById("categoria").value = producto.categoria;
+  document.getElementById("talla").value = producto.talla;
+  document.getElementById("color").value = producto.color;
+  document.getElementById("precio").value = producto.precio;
+  document.getElementById("cantidad").value = producto.cantidad;
+  document.getElementById("minimo").value = producto.minimo;
+
+  indiceEdicion = productos.indexOf(producto);
+  formulario.classList.remove("oculto");
+
+  mensaje.textContent = "Modifica los datos y guarda los cambios.";
+});
+
+const btnEliminar = document.createElement("button");
+btnEliminar.textContent = "Eliminar";
+
+btnEliminar.addEventListener("click", function() {
+  const confirmar = confirm(
+    "¿Seguro que deseas eliminar el producto " + producto.nombre + "?"
+  );
+
+  if (confirmar) {
+    productos = productos.filter(function(p) {
+      return p !== producto;
     });
+
+    localStorage.setItem(
+      "modastock_productos",
+      JSON.stringify(productos)
+    );
+
+    mostrarProductos();
+    mensaje.textContent = "Producto eliminado correctamente.";
+  }
+});
+
+celdaAcciones.appendChild(btnModificar);
+celdaAcciones.appendChild(btnEliminar);
+fila.appendChild(celdaAcciones);
+
 
     listaProductos.appendChild(fila);
   });
@@ -159,3 +307,4 @@ function mostrarProductos() {
       return p.cantidad === 0;
     }).length;
 }
+
