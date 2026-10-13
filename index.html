@@ -9,25 +9,64 @@
 </head>
 <body>
 
-  <!-- Inicio de sesión -->
-  <div id="pantallaLogin">
-    <h2>Inicio de sesión</h2>
+<div id="pantallaLogin">
+  <h2>Inicio de sesión</h2>
 
-    <form id="formLogin">
-      <label for="correoLogin">Correo:</label>
-      <input type="email" id="correoLogin" required>
+  <form id="formLogin">
+    <label for="correoLogin">Correo:</label>
+    <input type="email" id="correoLogin" required>
 
-      <br><br>
+    <br><br>
 
-      <label for="claveLogin">Contraseña:</label>
-      <input type="password" id="claveLogin" required>
+    <label for="claveLogin">Contraseña:</label>
+    <input type="password" id="claveLogin" required>
 
-      <br><br>
+    <br><br>
 
-      <button type="submit">Ingresar</button>
-      <p id="mensajeLogin"></p>
-    </form>
-  </div>
+    <button type="submit">Ingresar</button>
+    <p id="mensajeLogin"></p>
+  </form>
+
+  <p>¿No tienes una cuenta?</p>
+  <button type="button" id="btnMostrarRegistro">
+    Registrarse
+  </button>
+</div>
+
+<!-- Formulario de registro -->
+<div id="pantallaRegistro" class="oculto">
+  <h2>Crear cuenta</h2>
+
+  <form id="formRegistro">
+    <label for="nombreUsuario">Nombre:</label>
+    <input type="text" id="nombreUsuario" required>
+
+    <br><br>
+
+    <label for="correoRegistro">Correo:</label>
+    <input type="email" id="correoRegistro" required>
+
+    <br><br>
+
+    <label for="claveRegistro">Contraseña:</label>
+    <input type="password" id="claveRegistro" minlength="5" required>
+
+    <br><br>
+
+    <label for="confirmarClave">Confirmar contraseña:</label>
+    <input type="password" id="confirmarClave" minlength="5" required>
+
+    <br><br>
+
+    <button type="submit">Crear cuenta</button>
+    <p id="mensajeRegistro"></p>
+  </form>
+
+  <button type="button" id="btnVolverLogin">
+    Volver al inicio de sesión
+  </button>
+</div>
+
 
   <!-- Inventario: aparece después de ingresar -->
   <div id="contenidoInventario" style="display: none;">
@@ -131,16 +170,17 @@
         <div class="tabla-contenedor">
           <table>
             <thead>
-              <tr>
-                <th>Referencia</th>
-                <th>Producto</th>
-                <th>Talla</th>
-                <th>Color</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
+  <tr>
+    <th>Referencia</th>
+    <th>Producto</th>
+    <th>Talla</th>
+    <th>Color</th>
+    <th>Precio</th>
+    <th>Cantidad</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
             <tbody id="listaProductos">
               <tr>
                 <td colspan="7">No hay productos registrados todavía.</td>
@@ -157,3 +197,5 @@
   <script src="app.js"></script>
 </body>
 </html>
+
+
